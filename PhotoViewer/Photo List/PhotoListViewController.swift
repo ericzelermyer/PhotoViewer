@@ -52,7 +52,7 @@ class PhotoListViewController: UITableViewController {
         let galleryViewModel = PhotoGalleryViewModel(images: [viewModel.image(at: indexPath.row)],
                                                      selectedImageIndex: 0,
                                                      startRect: rect)
-        let gallery = PhotoGalleryViewController(viewModel: galleryViewModel)
+        let gallery = SinglePhotoViewer(viewModel: galleryViewModel)
         gallery.modalPresentationStyle = .overFullScreen
         present(gallery, animated: false, completion: nil)
     }

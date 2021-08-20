@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PhotoGalleryView: UIView {
+final class SinglePhotoView: UIView {
     enum Constants {
         static let fadeDuration: TimeInterval = 0.2
     }

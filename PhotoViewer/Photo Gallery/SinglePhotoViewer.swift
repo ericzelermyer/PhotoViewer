@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class PhotoGalleryViewController: UIViewController {
+final class SinglePhotoViewer: UIViewController {
     let viewModel: PhotoGalleryViewModel
     
-    private var galleryView: PhotoGalleryView {
-        return view as! PhotoGalleryView
+    private var galleryView: SinglePhotoView {
+        return view as! SinglePhotoView
     }
     
     init(viewModel: PhotoGalleryViewModel) {
@@ -25,7 +25,7 @@ final class PhotoGalleryViewController: UIViewController {
     }
     
     override func loadView() {
-        view = PhotoGalleryView()
+        view = SinglePhotoView()
     }
     
     override func viewDidLoad() {
