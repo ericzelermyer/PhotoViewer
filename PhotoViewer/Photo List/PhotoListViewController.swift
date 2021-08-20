@@ -49,10 +49,11 @@ class PhotoListViewController: UITableViewController {
     }
     
     private func displayPhotoGallery(for indexPath: IndexPath, atLocation rect: CGRect) {
-        let galleryViewModel = PhotoGalleryViewModel(images: [viewModel.image(at: indexPath.row)],
+        let image = viewModel.image(at: indexPath.row)
+        let galleryViewModel = PhotoGalleryViewModel(images: [image, image, image],
                                                      selectedImageIndex: 0,
                                                      startRect: rect)
-        let gallery = SinglePhotoViewer(viewModel: galleryViewModel)
+        let gallery = PhotoGalleryViewController(viewModel: galleryViewModel)
         gallery.modalPresentationStyle = .overFullScreen
         present(gallery, animated: false, completion: nil)
     }

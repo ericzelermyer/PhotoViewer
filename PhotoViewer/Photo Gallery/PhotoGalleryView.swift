@@ -2,12 +2,12 @@
 //  PhotoGalleryView.swift
 //  PhotoViewer
 //
-//  Created by Eric Zelermyer on 8/19/21.
+//  Created by Eric Zelermyer on 8/20/21.
 //
 
 import UIKit
 
-final class SinglePhotoView: UIView {
+final class PhotoGalleryView: UIView {
     enum Constants {
         static let fadeDuration: TimeInterval = 0.2
     }
@@ -16,8 +16,6 @@ final class SinglePhotoView: UIView {
         $0.backgroundColor = UIColor.black
         $0.alpha = 0
     }
-    
-    private(set) lazy var imageView: ImageZoomView = configureSubview(ImageZoomView())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +30,6 @@ final class SinglePhotoView: UIView {
     
      func layout() {
         constrainSubview(background, insets: .zero)
-        constrainSubview(imageView, insets: .zero)
     }
     
     func fadeIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
@@ -53,7 +50,7 @@ final class SinglePhotoView: UIView {
         }
         fadeAnimator.addCompletion { _ in
             transitionImageView.removeFromSuperview()
-            self.imageView.image = image
+//            self.imageView.image = image
             completion()
         }
         fadeAnimator.startAnimation()
@@ -70,7 +67,7 @@ final class SinglePhotoView: UIView {
         transitionImageView.clipsToBounds = true
         transitionImageView.image = image
         addSubview(transitionImageView)
-        imageView.image = nil
+//        imageView.image = nil
         
         let fadeAnimator = UIViewPropertyAnimator(duration: Constants.fadeDuration, curve: .easeIn) { [weak background] in
             background?.alpha = 0.0
@@ -82,4 +79,5 @@ final class SinglePhotoView: UIView {
         }
         fadeAnimator.startAnimation()
     }
+
 }

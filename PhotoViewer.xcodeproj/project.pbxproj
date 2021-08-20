@@ -10,11 +10,10 @@
 		9610C58526CDEC2A00D0A359 /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58226CDEC2A00D0A359 /* PhotoListViewModel.swift */; };
 		9610C58626CDEC2A00D0A359 /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58326CDEC2A00D0A359 /* PhotoListViewController.swift */; };
 		9610C58726CDEC2A00D0A359 /* PhotoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58426CDEC2A00D0A359 /* PhotoListCell.swift */; };
-		9610C58926CEC66100D0A359 /* SinglePhotoViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58826CEC66100D0A359 /* SinglePhotoViewer.swift */; };
+		9610C58926CEC66100D0A359 /* SinglePhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58826CEC66100D0A359 /* SinglePhotoViewController.swift */; };
 		9610C58C26CEC68C00D0A359 /* PhotoGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58B26CEC68C00D0A359 /* PhotoGalleryViewModel.swift */; };
 		9610C58F26CEC7EB00D0A359 /* UIView+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C58E26CEC7EB00D0A359 /* UIView+Utilities.swift */; };
 		9610C59126CEC80800D0A359 /* AutoLayoutHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C59026CEC80800D0A359 /* AutoLayoutHelpers.swift */; };
-		9610C59326CEC85500D0A359 /* SinglePhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C59226CEC85500D0A359 /* SinglePhotoView.swift */; };
 		9610C59526CF0A5900D0A359 /* UIViewController+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C59426CF0A5900D0A359 /* UIViewController+Utilities.swift */; };
 		9610C59726CF20D100D0A359 /* CGSize+AspectFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C59626CF20D100D0A359 /* CGSize+AspectFunctions.swift */; };
 		9610C59926CF313F00D0A359 /* UIWindow+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9610C59826CF313F00D0A359 /* UIWindow+Utilities.swift */; };
@@ -25,6 +24,9 @@
 		96A80B8026CDE2B90000977B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96A80B7E26CDE2B90000977B /* LaunchScreen.storyboard */; };
 		96A80B8B26CDE2B90000977B /* PhotoViewerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A80B8A26CDE2B90000977B /* PhotoViewerTests.swift */; };
 		96A80B9626CDE2B90000977B /* PhotoViewerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A80B9526CDE2B90000977B /* PhotoViewerUITests.swift */; };
+		96BB6AF826D03BDA0062993D /* PhotoGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */; };
+		96BB6AFA26D03D120062993D /* PhotoGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AF926D03D120062993D /* PhotoGalleryView.swift */; };
+		96BB6AFC26D047220062993D /* DevUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AFB26D047220062993D /* DevUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,11 +50,10 @@
 		9610C58226CDEC2A00D0A359 /* PhotoListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
 		9610C58326CDEC2A00D0A359 /* PhotoListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
 		9610C58426CDEC2A00D0A359 /* PhotoListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoListCell.swift; sourceTree = "<group>"; };
-		9610C58826CEC66100D0A359 /* SinglePhotoViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePhotoViewer.swift; sourceTree = "<group>"; };
+		9610C58826CEC66100D0A359 /* SinglePhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePhotoViewController.swift; sourceTree = "<group>"; };
 		9610C58B26CEC68C00D0A359 /* PhotoGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewModel.swift; sourceTree = "<group>"; };
 		9610C58E26CEC7EB00D0A359 /* UIView+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Utilities.swift"; sourceTree = "<group>"; };
 		9610C59026CEC80800D0A359 /* AutoLayoutHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutHelpers.swift; sourceTree = "<group>"; };
-		9610C59226CEC85500D0A359 /* SinglePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePhotoView.swift; sourceTree = "<group>"; };
 		9610C59426CF0A5900D0A359 /* UIViewController+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utilities.swift"; sourceTree = "<group>"; };
 		9610C59626CF20D100D0A359 /* CGSize+AspectFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+AspectFunctions.swift"; sourceTree = "<group>"; };
 		9610C59826CF313F00D0A359 /* UIWindow+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Utilities.swift"; sourceTree = "<group>"; };
@@ -69,6 +70,9 @@
 		96A80B9126CDE2B90000977B /* PhotoViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoViewerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A80B9526CDE2B90000977B /* PhotoViewerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerUITests.swift; sourceTree = "<group>"; };
 		96A80B9726CDE2B90000977B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
+		96BB6AF926D03D120062993D /* PhotoGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryView.swift; sourceTree = "<group>"; };
+		96BB6AFB26D047220062993D /* DevUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,10 +113,11 @@
 		9610C58A26CEC66C00D0A359 /* Photo Gallery */ = {
 			isa = PBXGroup;
 			children = (
-				9610C58826CEC66100D0A359 /* SinglePhotoViewer.swift */,
-				9610C59226CEC85500D0A359 /* SinglePhotoView.swift */,
-				9610C58B26CEC68C00D0A359 /* PhotoGalleryViewModel.swift */,
+				9610C58826CEC66100D0A359 /* SinglePhotoViewController.swift */,
 				9610C59A26CF389200D0A359 /* ImageZoomView.swift */,
+				96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */,
+				96BB6AF926D03D120062993D /* PhotoGalleryView.swift */,
+				9610C58B26CEC68C00D0A359 /* PhotoGalleryViewModel.swift */,
 			);
 			path = "Photo Gallery";
 			sourceTree = "<group>";
@@ -125,6 +130,7 @@
 				9610C59426CF0A5900D0A359 /* UIViewController+Utilities.swift */,
 				9610C59626CF20D100D0A359 /* CGSize+AspectFunctions.swift */,
 				9610C59826CF313F00D0A359 /* UIWindow+Utilities.swift */,
+				96BB6AFB26D047220062993D /* DevUtils.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -315,14 +321,16 @@
 				9610C59526CF0A5900D0A359 /* UIViewController+Utilities.swift in Sources */,
 				9610C59926CF313F00D0A359 /* UIWindow+Utilities.swift in Sources */,
 				9610C58F26CEC7EB00D0A359 /* UIView+Utilities.swift in Sources */,
-				9610C59326CEC85500D0A359 /* SinglePhotoView.swift in Sources */,
+				96BB6AF826D03BDA0062993D /* PhotoGalleryViewController.swift in Sources */,
+				96BB6AFA26D03D120062993D /* PhotoGalleryView.swift in Sources */,
 				9610C59B26CF389200D0A359 /* ImageZoomView.swift in Sources */,
 				9610C58C26CEC68C00D0A359 /* PhotoGalleryViewModel.swift in Sources */,
 				9610C58526CDEC2A00D0A359 /* PhotoListViewModel.swift in Sources */,
+				96BB6AFC26D047220062993D /* DevUtils.swift in Sources */,
 				96A80B7426CDE2B90000977B /* AppDelegate.swift in Sources */,
 				9610C58726CDEC2A00D0A359 /* PhotoListCell.swift in Sources */,
 				9610C59726CF20D100D0A359 /* CGSize+AspectFunctions.swift in Sources */,
-				9610C58926CEC66100D0A359 /* SinglePhotoViewer.swift in Sources */,
+				9610C58926CEC66100D0A359 /* SinglePhotoViewController.swift in Sources */,
 				96A80B7626CDE2B90000977B /* SceneDelegate.swift in Sources */,
 				9610C59126CEC80800D0A359 /* AutoLayoutHelpers.swift in Sources */,
 			);
