@@ -8,7 +8,12 @@
 import UIKit
 
 final class SinglePhotoViewController: UIViewController {
-    private(set) var image: UIImage
+    var image: UIImage? {
+        didSet {
+            imageView.image = image
+        }
+    }
+    
     private lazy var imageView: ImageZoomView = self.view.configureSubview(ImageZoomView())
     
     init(image: UIImage) {
@@ -25,6 +30,7 @@ final class SinglePhotoViewController: UIViewController {
         super.viewDidLoad()
         
         layout()
+        view.backgroundColor = .clear
         imageView.image = image
     }
     

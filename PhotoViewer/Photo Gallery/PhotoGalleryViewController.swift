@@ -16,6 +16,10 @@ final class PhotoGalleryViewController: UIViewController {
         return view as! PhotoGalleryView
     }
     
+    private var currentPhotoController: SinglePhotoViewController {
+        return pageController.viewControllers![0] as! SinglePhotoViewController
+    }
+    
     init(viewModel: PhotoGalleryViewModel) {
         self.viewModel = viewModel
         
@@ -35,14 +39,18 @@ final class PhotoGalleryViewController: UIViewController {
         
         pageController = UIPageViewController(transitionStyle: .scroll,
                                               navigationOrientation: .horizontal)
+        pageController.view.backgroundColor = .clear
         pageController.dataSource = self
         displayChildViewController(pageController)
         view.constrainSubview(pageController.view,
                               insets: .zero)
+        galleryView.bringSubviewToFront(galleryView.closeButton)
+        galleryView.bringSubviewToFront(galleryView.footerBar)
         
-        let backTap = UITapGestureRecognizer(target: self,
-                                             action: #selector(backgroundTap))
-        galleryView.background.addGestureRecognizer(backTap)
+        galleryView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(photoTap))
+        galleryView.addGestureRecognizer(tapGesture)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,22 +63,31 @@ final class PhotoGalleryViewController: UIViewController {
             self.pageController.setViewControllers([SinglePhotoViewController(image: self.viewModel.images[0])],
                                                    direction: .forward,
                                                    animated: false)
+            self.galleryView.toggleControls()
         }
     }
     
     @objc
-    private func backgroundTap() {
+    private func close() {
+        galleryView.hideControls()
+        currentPhotoController.image = nil
         galleryView.fadeOut(to: viewModel.startRect,
                             with: viewModel.selectedImage) { [weak self] in
             self?.dismiss(animated: false, completion: nil)
         }
+    }
+    
+    @objc
+    private func photoTap() {
+        galleryView.toggleControls()
     }
 }
 
 extension PhotoGalleryViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let photoController = viewController as? SinglePhotoViewController,
-              let index = viewModel.images.firstIndex(of: photoController.image),
+              let image = photoController.image,
+              let index = viewModel.images.firstIndex(of: image),
               index > 0
         else {
             return nil
@@ -81,7 +98,8 @@ extension PhotoGalleryViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let photoController = viewController as? SinglePhotoViewController,
-              let index = viewModel.images.firstIndex(of: photoController.image),
+              let image = photoController.image,
+              let index = viewModel.images.firstIndex(of: image),
               index < viewModel.images.count - 1
         else {
             return nil

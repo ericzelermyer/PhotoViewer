@@ -17,6 +17,20 @@ final class PhotoGalleryView: UIView {
         $0.alpha = 0
     }
     
+    private(set) lazy var closeButton: UIButton = configureSubview(UIButton()) {
+        $0.widthAnchor.constraint(equalToConstant: 50).activate()
+        $0.heightAnchor.constraint(equalToConstant: 50).activate()
+        $0.setImage(UIImage(named: "photo_close_button"), for: .normal)
+        $0.imageView?.contentMode = .center
+        $0.isHidden = true
+    }
+    
+    private(set) lazy var footerBar: UIView = configureSubview(UIView()) {
+        $0.backgroundColor = .black
+        $0.alpha = 0.8
+        $0.isHidden = true
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -30,6 +44,28 @@ final class PhotoGalleryView: UIView {
     
      func layout() {
         constrainSubview(background, insets: .zero)
+        
+        NSLayoutConstraint.activate([
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            closeButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10)
+        ])
+        
+        NSLayoutConstraint.activate([
+            footerBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            footerBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            footerBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            footerBar.heightAnchor.constraint(equalToConstant: 170)
+        ])
+    }
+    
+    func toggleControls() {
+        closeButton.isHidden = !closeButton.isHidden
+        footerBar.isHidden = !footerBar.isHidden
+    }
+    
+    func hideControls() {
+        closeButton.isHidden = true
+        footerBar.isHidden = true
     }
     
     func fadeIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
