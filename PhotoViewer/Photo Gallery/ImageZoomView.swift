@@ -43,18 +43,6 @@ class ImageZoomView: UIScrollView {
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         delegate = self
-        
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-            doubleTapRecognizer.numberOfTapsRequired = 2
-            addGestureRecognizer(doubleTapRecognizer)
-    }
-
-    @objc private func handleDoubleTap(_ sender: UITapGestureRecognizer) {
-        if zoomScale == 1 {
-            setZoomScale(3, animated: true)
-        } else {
-            setZoomScale(1, animated: true)
-        }
     }
 }
 

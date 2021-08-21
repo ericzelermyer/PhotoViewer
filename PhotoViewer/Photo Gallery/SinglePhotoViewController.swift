@@ -37,4 +37,12 @@ final class SinglePhotoViewController: UIViewController {
     private func layout() {
         view.constrainSubview(imageView, insets: .zero)
     }
+    
+    func toggleZoom() {
+        if imageView.zoomScale == 1 {
+            imageView.setZoomScale(3, animated: true)
+        } else {
+            imageView.setZoomScale(1, animated: true)
+        }
+    }
 }

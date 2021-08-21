@@ -13,13 +13,27 @@ final class PhotoListViewModel {
         UIImage(named: "image2")!,
         UIImage(named: "image3")!,
         UIImage(named: "image4")!,
+        UIImage(named: "image5")!,
+        UIImage(named: "image6")!,
+        UIImage(named: "image7")!,
+        UIImage(named: "image8")!,
+        UIImage(named: "image9")!,
     ]
     
-    var imageCount: Int {
-        return images.count
+    private lazy var imageRows: [[UIImage]] = {
+        var rows: [[UIImage]] = []
+        for _ in 0...5 {
+            let num = Int.random(in: 1...4)
+            rows.append(Array(images.shuffled()[0...num]))
+        }
+        return rows
+    }()
+    
+    var rowCount: Int {
+        return imageRows.count
     }
     
-    func image(at index: Int) -> UIImage {
-        return images[index]
+    func images(at index: Int) -> [UIImage] {
+        return imageRows[index]
     }
 }

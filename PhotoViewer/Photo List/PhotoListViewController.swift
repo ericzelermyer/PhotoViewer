@@ -33,25 +33,35 @@ class PhotoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.imageCount
+        return viewModel.rowCount
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PhotoListCell
         cell.selectionStyle = .none
-        cell.imageDisplay.image = viewModel.image(at: indexPath.row)
+        let images = viewModel.images(at: indexPath.row)
+        cell.configure(with: images)
         cell.imageTapHandler = { [weak self] imageView in
             guard let self = self else { return }
             
-            self.displayPhotoGallery(for: indexPath, atLocation: imageView.convert(imageView.bounds, to: UIWindow.mainWindow ?? tableView))
+            let selectedIndex: Int = {
+                guard let image = imageView.image else { return 0 }
+                return images.firstIndex(of: image) ?? 0
+            }()
+            
+            self.displayPhotoGallery(for: indexPath,
+                                     atLocation: imageView.convert(imageView.bounds,
+                                                                   to: UIWindow.mainWindow ?? tableView),
+                                     selectedIndex: selectedIndex)
         }
         return cell
     }
     
-    private func displayPhotoGallery(for indexPath: IndexPath, atLocation rect: CGRect) {
-        let image = viewModel.image(at: indexPath.row)
-        let galleryViewModel = PhotoGalleryViewModel(images: [image, image, image],
-                                                     selectedImageIndex: 0,
+    private func displayPhotoGallery(for indexPath: IndexPath,
+                                     atLocation rect: CGRect,
+                                     selectedIndex: Int) {
+        let galleryViewModel = PhotoGalleryViewModel(images: viewModel.images(at: indexPath.row),
+                                                     selectedImageIndex: selectedIndex,
                                                      startRect: rect)
         let gallery = PhotoGalleryViewController(viewModel: galleryViewModel)
         gallery.modalPresentationStyle = .overFullScreen

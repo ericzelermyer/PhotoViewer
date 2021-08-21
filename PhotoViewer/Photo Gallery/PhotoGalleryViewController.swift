@@ -49,8 +49,15 @@ final class PhotoGalleryViewController: UIViewController {
         
         galleryView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(photoTap))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+            
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        doubleTapGesture.numberOfTapsRequired = 2
+        
+        tapGesture.require(toFail: doubleTapGesture)
+
         galleryView.addGestureRecognizer(tapGesture)
+        galleryView.addGestureRecognizer(doubleTapGesture)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,15 +67,14 @@ final class PhotoGalleryViewController: UIViewController {
                            with: viewModel.selectedImage) { [weak self] in
             guard let self = self else { return }
             
-            self.pageController.setViewControllers([SinglePhotoViewController(image: self.viewModel.images[0])],
+            self.pageController.setViewControllers([SinglePhotoViewController(image: self.viewModel.selectedImage)],
                                                    direction: .forward,
                                                    animated: false)
             self.galleryView.toggleControls()
         }
     }
     
-    @objc
-    private func close() {
+    @objc private func close() {
         galleryView.hideControls()
         currentPhotoController.image = nil
         galleryView.fadeOut(to: viewModel.startRect,
@@ -77,9 +83,12 @@ final class PhotoGalleryViewController: UIViewController {
         }
     }
     
-    @objc
-    private func photoTap() {
+    @objc private func handleTap() {
         galleryView.toggleControls()
+    }
+    
+    @objc private func handleDoubleTap() {
+        currentPhotoController.toggleZoom()
     }
 }
 
