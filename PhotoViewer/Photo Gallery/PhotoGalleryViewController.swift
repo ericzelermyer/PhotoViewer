@@ -24,6 +24,10 @@ final class PhotoGalleryViewController: UIViewController {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
+        
+        viewModel.selectionHandler = { [weak self] update in
+            self?.showPage(update)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -47,19 +51,14 @@ final class PhotoGalleryViewController: UIViewController {
         view.constrainSubview(pageController.view,
                               insets: .zero)
         galleryView.bringSubviewToFront(galleryView.closeButton)
-        galleryView.bringSubviewToFront(galleryView.footerBar)
+        galleryView.bringSubviewToFront(galleryView.controlBar)
         
         galleryView.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-            
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
-        doubleTapGesture.numberOfTapsRequired = 2
-        
-        tapGesture.require(toFail: doubleTapGesture)
-
-        galleryView.addGestureRecognizer(tapGesture)
-        galleryView.addGestureRecognizer(doubleTapGesture)
+        galleryView.controlBar.setup(images: viewModel.images, selectedIndex: viewModel.selectedImageIndex)
+        galleryView.controlBar.selectionHandler = { [weak self] index in
+            self?.viewModel.selectImage(at: index)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,11 +81,26 @@ final class PhotoGalleryViewController: UIViewController {
             self?.startDismiss(from: rect)
         }
         
+        controller.tapHandler = { [weak self] in
+            self?.galleryView.toggleControls()
+        }
+        
+        controller.doubleTapHandler = { [weak self] in
+            self?.currentPhotoController.toggleZoom()
+        }
+        
         return controller
     }
     
+    private func showPage(_ update: PhotoGalleryViewModel.IndexUpdate) {
+        pageController.setViewControllers([self.photoController(for: update.value)],
+                                          direction: update.direction,
+                                          animated: true,
+                                          completion: nil)
+    }
+    
     private func startDismiss(from: CGRect? = nil) {
-        galleryView.hideControls()
+        galleryView.hideControls(animated: false)
         currentPhotoController.image = nil
         galleryView.animatePhotoOut(from: from,
                             to: viewModel.selectedImageRect,
@@ -97,14 +111,6 @@ final class PhotoGalleryViewController: UIViewController {
     
     @objc private func close() {
         startDismiss()
-    }
-    
-    @objc private func handleTap() {
-        galleryView.toggleControls()
-    }
-    
-    @objc private func handleDoubleTap() {
-        currentPhotoController.toggleZoom()
     }
 }
 
@@ -128,6 +134,7 @@ extension PhotoGalleryViewController: UIPageViewControllerDelegate {
         
         if completed {
             viewModel.selectedImageIndex = controller.index
+            galleryView.controlBar.updateSelectedThumbnail(index: controller.index)
         }
     }
 }

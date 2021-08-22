@@ -9,12 +9,14 @@ import UIKit
 
 final class SinglePhotoViewController: UIViewController {
     enum Constants {
-        static let dismissThreshold: CGFloat = 80
+        static let dismissThreshold: CGFloat = 75
     }
     let index: Int
     
     var dismissHandler: ((CGRect) -> Void)?
     var dismissProgressHandler: ((CGFloat) -> Void)?
+    var tapHandler: (() -> Void)?
+    var doubleTapHandler: (() -> Void)?
     
     var image: UIImage? {
         didSet {
@@ -47,12 +49,30 @@ final class SinglePhotoViewController: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         panGesture.delegate = self
         imageView.addGestureRecognizer(panGesture)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+            
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        doubleTapGesture.numberOfTapsRequired = 2
+        
+        tapGesture.require(toFail: doubleTapGesture)
+
+        view.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(doubleTapGesture)
     }
     
     private func layout() {
         view.constrainSubview(imageView, insets: .zero)
     }
     
+    @objc private func handleTap() {
+        tapHandler?()
+    }
+    
+    @objc private func handleDoubleTap() {
+        doubleTapHandler?()
+    }
+
     @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began:

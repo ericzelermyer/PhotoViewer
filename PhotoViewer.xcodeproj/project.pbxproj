@@ -27,7 +27,8 @@
 		96BB6AF826D03BDA0062993D /* PhotoGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */; };
 		96BB6AFA26D03D120062993D /* PhotoGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AF926D03D120062993D /* PhotoGalleryView.swift */; };
 		96BB6AFC26D047220062993D /* DevUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AFB26D047220062993D /* DevUtils.swift */; };
-		96BB6AFE26D0824D0062993D /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AFD26D0824D0062993D /* PhotoCollectionViewCell.swift */; };
+		96BB6B0026D2C9550062993D /* PhotoGalleryControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6AFF26D2C9550062993D /* PhotoGalleryControlBar.swift */; };
+		96BB6B0226D2DFE20062993D /* PhotoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BB6B0126D2DFE20062993D /* PhotoContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +75,8 @@
 		96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
 		96BB6AF926D03D120062993D /* PhotoGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryView.swift; sourceTree = "<group>"; };
 		96BB6AFB26D047220062993D /* DevUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevUtils.swift; sourceTree = "<group>"; };
-		96BB6AFD26D0824D0062993D /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		96BB6AFF26D2C9550062993D /* PhotoGalleryControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryControlBar.swift; sourceTree = "<group>"; };
+		96BB6B0126D2DFE20062993D /* PhotoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +110,6 @@
 				9610C58226CDEC2A00D0A359 /* PhotoListViewModel.swift */,
 				9610C58326CDEC2A00D0A359 /* PhotoListViewController.swift */,
 				9610C58426CDEC2A00D0A359 /* PhotoListCell.swift */,
-				96BB6AFD26D0824D0062993D /* PhotoCollectionViewCell.swift */,
 			);
 			path = "Photo List";
 			sourceTree = "<group>";
@@ -121,6 +122,8 @@
 				96BB6AF726D03BDA0062993D /* PhotoGalleryViewController.swift */,
 				96BB6AF926D03D120062993D /* PhotoGalleryView.swift */,
 				9610C58B26CEC68C00D0A359 /* PhotoGalleryViewModel.swift */,
+				96BB6AFF26D2C9550062993D /* PhotoGalleryControlBar.swift */,
+				96BB6B0126D2DFE20062993D /* PhotoContentView.swift */,
 			);
 			path = "Photo Gallery";
 			sourceTree = "<group>";
@@ -324,13 +327,14 @@
 				9610C59526CF0A5900D0A359 /* UIViewController+Utilities.swift in Sources */,
 				9610C59926CF313F00D0A359 /* UIWindow+Utilities.swift in Sources */,
 				9610C58F26CEC7EB00D0A359 /* UIView+Utilities.swift in Sources */,
-				96BB6AFE26D0824D0062993D /* PhotoCollectionViewCell.swift in Sources */,
+				96BB6B0026D2C9550062993D /* PhotoGalleryControlBar.swift in Sources */,
 				96BB6AF826D03BDA0062993D /* PhotoGalleryViewController.swift in Sources */,
 				96BB6AFA26D03D120062993D /* PhotoGalleryView.swift in Sources */,
 				9610C59B26CF389200D0A359 /* ImageZoomView.swift in Sources */,
 				9610C58C26CEC68C00D0A359 /* PhotoGalleryViewModel.swift in Sources */,
 				9610C58526CDEC2A00D0A359 /* PhotoListViewModel.swift in Sources */,
 				96BB6AFC26D047220062993D /* DevUtils.swift in Sources */,
+				96BB6B0226D2DFE20062993D /* PhotoContentView.swift in Sources */,
 				96A80B7426CDE2B90000977B /* AppDelegate.swift in Sources */,
 				9610C58726CDEC2A00D0A359 /* PhotoListCell.swift in Sources */,
 				9610C59726CF20D100D0A359 /* CGSize+AspectFunctions.swift in Sources */,

@@ -17,6 +17,7 @@ final class PhotoListCell: UITableViewCell {
         static let spacing: CGFloat = 8
         static let verticalMargin: CGFloat = 30
         static let contentInsets = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 60)
+        static let cornerRadius: CGFloat = 16
     }
     
     var imageTapHandler: ((CollectionDescription) -> Void)?
@@ -25,7 +26,8 @@ final class PhotoListCell: UITableViewCell {
     
     private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
-        layout.estimatedItemSize = Constants.itemSize
+        layout.itemSize = Constants.itemSize
+        layout.minimumInteritemSpacing = Constants.spacing
         layout.scrollDirection = .horizontal
         return layout
     }()
@@ -38,6 +40,10 @@ final class PhotoListCell: UITableViewCell {
         $0.contentInset = Constants.contentInsets
     }
     
+    let cellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, UIImage>() { cell, indexPath, image in
+        cell.contentConfiguration = PhotoContentViewConfiguration(image: image, cornerRadius: 16)
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style,
                    reuseIdentifier: reuseIdentifier)
@@ -46,7 +52,6 @@ final class PhotoListCell: UITableViewCell {
         
         imageDisplay.dataSource = self
         imageDisplay.delegate = self
-        imageDisplay.register(PhotoCollectionvViewCell.self, forCellWithReuseIdentifier: "cell")
     }
     
     required init?(coder: NSCoder) {
@@ -70,7 +75,7 @@ final class PhotoListCell: UITableViewCell {
     fileprivate func getCellRects() -> [CGRect] {
         var rects = [CGRect]()
         for num in 0..<images.count {
-            let x = CGFloat(num) * (Constants.itemSize.width + Constants.spacing) - imageDisplay.contentOffset.x
+            let x = CGFloat(num) * (Constants.itemSize.width + Constants.spacing + 2) - imageDisplay.contentOffset.x
             rects.append(CGRect(origin: CGPoint(x: x, y: Constants.verticalMargin), size: Constants.itemSize))
         }
         return rects
@@ -93,25 +98,7 @@ extension PhotoListCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let image = images[indexPath.item]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        if let photoCell = cell as? PhotoCollectionvViewCell {
-            photoCell.imageView.image = image
-        }
-        return cell
-    }
-}
-
-extension PhotoListCell: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return Constants.itemSize
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return Constants.spacing
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Constants.spacing
+        return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: image)
     }
 }
 

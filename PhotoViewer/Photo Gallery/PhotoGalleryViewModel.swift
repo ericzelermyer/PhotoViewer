@@ -8,9 +8,15 @@
 import UIKit
 
 final class PhotoGalleryViewModel {
+    struct IndexUpdate {
+        let value: Int
+        let direction: UIPageViewController.NavigationDirection
+    }
     private(set) var images: [UIImage]
     private(set) var rects: [CGRect]
     var selectedImageIndex: Int
+    
+    var selectionHandler: ((IndexUpdate) -> Void)?
     
     var selectedImage: UIImage {
         return images[selectedImageIndex]
@@ -32,5 +38,11 @@ final class PhotoGalleryViewModel {
         self.images = images
         self.selectedImageIndex = selectedImageIndex
         self.rects = rects
+    }
+    
+    func selectImage(at index: Int) {
+        let direction: UIPageViewController.NavigationDirection = index > selectedImageIndex ? .forward : .reverse
+        selectedImageIndex = index
+        selectionHandler?(IndexUpdate(value: index, direction: direction))
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 final class PhotoGalleryView: UIView {
     enum Constants {
         static let transitionDuration: TimeInterval = 0.15
-        static let footerHeight: CGFloat = 170
+        static let footerHeight: CGFloat = 140
     }
     
     private(set) lazy var background: UIView = configureSubview(UIView()) {
@@ -26,10 +26,7 @@ final class PhotoGalleryView: UIView {
         $0.alpha = 0.0
     }
     
-    private(set) lazy var footerBar: UIView = configureSubview(UIView()) {
-        $0.backgroundColor = .black
-        $0.alpha = 0.8
-    }
+    private(set) lazy var controlBar: PhotoGalleryControlBar = configureSubview(PhotoGalleryControlBar())
     
     private var footerBottomConstraint: NSLayoutConstraint!
     
@@ -56,12 +53,12 @@ final class PhotoGalleryView: UIView {
             closeButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10)
         ])
         
-        footerBottomConstraint = footerBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.footerHeight)
+        footerBottomConstraint = controlBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.footerHeight)
         NSLayoutConstraint.activate([
-            footerBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            footerBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            controlBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            controlBar.trailingAnchor.constraint(equalTo: trailingAnchor),
             footerBottomConstraint,
-            footerBar.heightAnchor.constraint(equalToConstant: Constants.footerHeight)
+            controlBar.heightAnchor.constraint(equalToConstant: Constants.footerHeight)
         ])
     }
     
@@ -73,9 +70,14 @@ final class PhotoGalleryView: UIView {
         }
     }
     
-    func hideControls() {
+    func hideControls(animated: Bool = true) {
         layoutIfNeeded()
         footerBottomConstraint.constant = Constants.footerHeight
+        if !animated {
+            layoutIfNeeded()
+            closeButton.alpha = 0.0
+            return
+        }
         
         let animator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeOut) { [weak self] in
             guard let self = self else { return }
@@ -136,7 +138,7 @@ final class PhotoGalleryView: UIView {
         transitionImageView.image = image
         addSubview(transitionImageView)
         
-        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeIn) { [weak background] in
+        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeOut) { [weak background] in
             background?.alpha = 0.0
             transitionImageView.frame = rect
         }
