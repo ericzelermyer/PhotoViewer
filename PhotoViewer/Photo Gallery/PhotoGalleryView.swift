@@ -9,7 +9,7 @@ import UIKit
 
 final class PhotoGalleryView: UIView {
     enum Constants {
-        static let fadeDuration: TimeInterval = 0.2
+        static let transitionDuration: TimeInterval = 0.15
     }
     
     private(set) lazy var background: UIView = configureSubview(UIView()) {
@@ -68,7 +68,7 @@ final class PhotoGalleryView: UIView {
         footerBar.isHidden = true
     }
     
-    func fadeIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
+    func animateIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
         let imageSize = image.size
         
         let transitionImageView = UIImageView(frame: rect)
@@ -80,32 +80,32 @@ final class PhotoGalleryView: UIView {
         let finalSize = CGSize.aspectFit(aspectRatio: imageSize, boundingSize: bounds.size)
         let finalRect = CGRect(origin: CGPoint(x: bounds.midX - finalSize.width/2, y: bounds.midY - finalSize.height/2), size: finalSize)
         
-        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.fadeDuration, curve: .easeIn) { [weak background] in
+        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeIn) { [weak background] in
             background?.alpha = 1.0
             transitionImageView.frame = finalRect
         }
         fadeAnimator.addCompletion { _ in
             transitionImageView.removeFromSuperview()
-//            self.imageView.image = image
             completion()
         }
         fadeAnimator.startAnimation()
     }
 
-    func fadeOut(to rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
+    func animateOut(from: CGRect? = nil, to rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
         let imageSize = image.size
         
         let finalSize = CGSize.aspectFit(aspectRatio: imageSize, boundingSize: bounds.size)
-        let finalRect = CGRect(origin: CGPoint(x: bounds.midX - finalSize.width/2, y: bounds.midY - finalSize.height/2), size: finalSize)
+        let startRect = from ?? CGRect(origin: CGPoint(x: bounds.midX - finalSize.width/2,
+                                                       y: bounds.midY - finalSize.height/2),
+                                       size: finalSize)
 
-        let transitionImageView = UIImageView(frame: finalRect)
+        let transitionImageView = UIImageView(frame: startRect)
         transitionImageView.contentMode = .scaleAspectFill
         transitionImageView.clipsToBounds = true
         transitionImageView.image = image
         addSubview(transitionImageView)
-//        imageView.image = nil
         
-        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.fadeDuration, curve: .easeIn) { [weak background] in
+        let fadeAnimator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeIn) { [weak background] in
             background?.alpha = 0.0
             transitionImageView.frame = rect
         }

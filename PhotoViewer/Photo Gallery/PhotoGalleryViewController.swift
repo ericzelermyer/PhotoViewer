@@ -63,24 +63,38 @@ final class PhotoGalleryViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        galleryView.fadeIn(from: viewModel.startRect,
+        galleryView.animateIn(from: viewModel.startRect,
                            with: viewModel.selectedImage) { [weak self] in
             guard let self = self else { return }
             
-            self.pageController.setViewControllers([SinglePhotoViewController(image: self.viewModel.selectedImage)],
+            self.pageController.setViewControllers([self.photoController(for: self.viewModel.selectedImageIndex)],
                                                    direction: .forward,
                                                    animated: false)
             self.galleryView.toggleControls()
         }
     }
     
-    @objc private func close() {
+    fileprivate func photoController(for index: Int) -> SinglePhotoViewController {
+        let controller = SinglePhotoViewController(image: viewModel.images[index])
+        controller.dismissHandler = { [weak self] rect in
+            self?.startDismiss(from: rect)
+        }
+        
+        return controller
+    }
+    
+    private func startDismiss(from: CGRect? = nil) {
         galleryView.hideControls()
         currentPhotoController.image = nil
-        galleryView.fadeOut(to: viewModel.startRect,
+        galleryView.animateOut(from: from,
+                            to: viewModel.startRect,
                             with: viewModel.selectedImage) { [weak self] in
             self?.dismiss(animated: false, completion: nil)
         }
+    }
+    
+    @objc private func close() {
+        startDismiss()
     }
     
     @objc private func handleTap() {
@@ -102,7 +116,7 @@ extension PhotoGalleryViewController: UIPageViewControllerDataSource {
             return nil
         }
         
-        return SinglePhotoViewController(image: viewModel.images[index - 1])
+        return self.photoController(for: index - 1)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -114,6 +128,6 @@ extension PhotoGalleryViewController: UIPageViewControllerDataSource {
             return nil
         }
         
-        return SinglePhotoViewController(image: viewModel.images[index + 1])
+        return self.photoController(for: index + 1)
     }
 }

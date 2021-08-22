@@ -11,6 +11,7 @@ final class PhotoListCell: UITableViewCell {
     enum Constants {
         static let itemSize: CGSize = CGSize(width: 216, height: 216)
         static let spacing: CGFloat = 8
+        static let verticalMargin: CGFloat = 30
     }
     
     var imageTapHandler: ((UIImageView) -> Void)?
@@ -48,8 +49,17 @@ final class PhotoListCell: UITableViewCell {
     }
     
     private func layout() {
-        contentView.constrainSubview(imageDisplay,
-                                     insets: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
+        let top = imageDisplay.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.verticalMargin)
+        top.priority = .defaultHigh
+        let bottom = imageDisplay.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.verticalMargin)
+        bottom.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            top,
+            bottom,
+            imageDisplay.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageDisplay.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
     }
     
     func configure(with images: [UIImage]) {

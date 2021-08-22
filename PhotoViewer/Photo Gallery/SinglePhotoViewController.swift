@@ -9,7 +9,7 @@ import UIKit
 
 final class SinglePhotoViewController: UIViewController {
     enum Constants {
-        static let threshold: CGFloat = 80
+        static let dismissThreshold: CGFloat = 80
     }
     
     var dismissHandler: ((CGRect) -> Void)?
@@ -55,11 +55,13 @@ final class SinglePhotoViewController: UIViewController {
         switch gesture.state {
         case .began:
             guard let image = imageView.image else { return }
+            
             let proxy = UIImageView()
             proxy.contentMode = .scaleAspectFit
             proxy.image = image
             let contentSize = CGSize.aspectFit(aspectRatio: image.size, boundingSize: view.bounds.size)
             proxy.frame = CGRect(origin: CGPoint(x: view.frame.midX - contentSize.width/2, y: view.frame.midY - contentSize.height/2), size: contentSize)
+            
             dragStartPoint = CGPoint(x: proxy.frame.midX, y: proxy.frame.midY)
             imageView.isHidden = true
             view.addSubview(proxy)
@@ -70,13 +72,15 @@ final class SinglePhotoViewController: UIViewController {
             let move = gesture.translation(in: view)
             proxy.center = CGPoint(x: startPoint.x + move.x,
                                    y: startPoint.y + move.y)
+            
             let overall = abs(proxy.center.y - startPoint.y)
-            let percent = overall/Constants.threshold
+            let percent = overall/Constants.dismissThreshold
+            // used so that UI can show indication that dismissal is starting to happen (like having background fade out)
             dismissProgressHandler?(percent)
         case .ended:
             guard let proxy = dragImage, let startPoint = dragStartPoint else { return }
             
-            if abs(proxy.center.y - startPoint.y) > Constants.threshold {
+            if abs(proxy.center.y - startPoint.y) > Constants.dismissThreshold {
                 proxy.removeFromSuperview()
                 dragImage = nil
                 dismissHandler?(proxy.frame)
@@ -93,6 +97,7 @@ final class SinglePhotoViewController: UIViewController {
             }
         default:
             guard let proxy = dragImage else { return }
+            
             proxy.removeFromSuperview()
             dragImage = nil
         }
@@ -101,7 +106,7 @@ final class SinglePhotoViewController: UIViewController {
     func toggleZoom() {
         if imageView.zoomScale == 1 {
             imageView.setZoomScale(3, animated: true)
-        } else {
+        } else { 
             imageView.setZoomScale(1, animated: true)
         }
     }
@@ -109,11 +114,14 @@ final class SinglePhotoViewController: UIViewController {
 
 extension SinglePhotoViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // only capture gesture if it's swipe to dismiss, otherwise it will interfere with swipe to page
+        
         guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return true }
         
         guard imageView.zoomScale == 1 else { return false }
         
         let velocity = panGesture.velocity(in: view)
-        return abs(velocity.x) < 12
+        // treat as swipe to dismiss if gesture is primarily vertical
+        return abs(velocity.x)/abs(velocity.y) < 0.35
     }
 }
