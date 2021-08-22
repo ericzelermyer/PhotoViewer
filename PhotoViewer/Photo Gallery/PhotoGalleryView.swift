@@ -10,6 +10,7 @@ import UIKit
 final class PhotoGalleryView: UIView {
     enum Constants {
         static let transitionDuration: TimeInterval = 0.15
+        static let footerHeight: CGFloat = 170
     }
     
     private(set) lazy var background: UIView = configureSubview(UIView()) {
@@ -22,13 +23,18 @@ final class PhotoGalleryView: UIView {
         $0.heightAnchor.constraint(equalToConstant: 50).activate()
         $0.setImage(UIImage(named: "photo_close_button"), for: .normal)
         $0.imageView?.contentMode = .center
-        $0.isHidden = true
+        $0.alpha = 0.0
     }
     
     private(set) lazy var footerBar: UIView = configureSubview(UIView()) {
         $0.backgroundColor = .black
         $0.alpha = 0.8
-        $0.isHidden = true
+    }
+    
+    private var footerBottomConstraint: NSLayoutConstraint!
+    
+    private var controlsVisible: Bool {
+        return closeButton.alpha == 1.0
     }
     
     override init(frame: CGRect) {
@@ -50,25 +56,50 @@ final class PhotoGalleryView: UIView {
             closeButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10)
         ])
         
+        footerBottomConstraint = footerBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.footerHeight)
         NSLayoutConstraint.activate([
             footerBar.leadingAnchor.constraint(equalTo: leadingAnchor),
             footerBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            footerBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            footerBar.heightAnchor.constraint(equalToConstant: 170)
+            footerBottomConstraint,
+            footerBar.heightAnchor.constraint(equalToConstant: Constants.footerHeight)
         ])
     }
     
     func toggleControls() {
-        closeButton.isHidden = !closeButton.isHidden
-        footerBar.isHidden = !footerBar.isHidden
+        if controlsVisible {
+            hideControls()
+        } else {
+            showControls()
+        }
     }
     
     func hideControls() {
-        closeButton.isHidden = true
-        footerBar.isHidden = true
+        layoutIfNeeded()
+        footerBottomConstraint.constant = Constants.footerHeight
+        
+        let animator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeOut) { [weak self] in
+            guard let self = self else { return }
+            
+            self.closeButton.alpha = 0.0
+            self.layoutIfNeeded()
+        }
+        animator.startAnimation()
     }
     
-    func animateIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
+    func showControls() {
+        layoutIfNeeded()
+        footerBottomConstraint.constant = 0
+
+        let animator = UIViewPropertyAnimator(duration: Constants.transitionDuration, curve: .easeOut) { [weak self] in
+            guard let self = self else { return }
+            
+            self.closeButton.alpha = 1.0
+            self.layoutIfNeeded()
+        }
+        animator.startAnimation()
+    }
+    
+    func animatePhotoIn(from rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
         let imageSize = image.size
         
         let transitionImageView = UIImageView(frame: rect)
@@ -91,7 +122,7 @@ final class PhotoGalleryView: UIView {
         fadeAnimator.startAnimation()
     }
 
-    func animateOut(from: CGRect? = nil, to rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
+    func animatePhotoOut(from: CGRect? = nil, to rect: CGRect, with image: UIImage, completion: @escaping () -> Void) {
         let imageSize = image.size
         
         let finalSize = CGSize.aspectFit(aspectRatio: imageSize, boundingSize: bounds.size)

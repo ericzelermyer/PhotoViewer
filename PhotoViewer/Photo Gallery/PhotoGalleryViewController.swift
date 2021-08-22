@@ -41,6 +41,8 @@ final class PhotoGalleryViewController: UIViewController {
                                               navigationOrientation: .horizontal)
         pageController.view.backgroundColor = .clear
         pageController.dataSource = self
+        pageController.delegate = self
+        
         displayChildViewController(pageController)
         view.constrainSubview(pageController.view,
                               insets: .zero)
@@ -63,19 +65,19 @@ final class PhotoGalleryViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        galleryView.animateIn(from: viewModel.startRect,
+        galleryView.animatePhotoIn(from: viewModel.selectedImageRect,
                            with: viewModel.selectedImage) { [weak self] in
             guard let self = self else { return }
             
             self.pageController.setViewControllers([self.photoController(for: self.viewModel.selectedImageIndex)],
                                                    direction: .forward,
                                                    animated: false)
-            self.galleryView.toggleControls()
+            self.galleryView.showControls()
         }
     }
     
     fileprivate func photoController(for index: Int) -> SinglePhotoViewController {
-        let controller = SinglePhotoViewController(image: viewModel.images[index])
+        let controller = SinglePhotoViewController(image: viewModel.images[index], index: index)
         controller.dismissHandler = { [weak self] rect in
             self?.startDismiss(from: rect)
         }
@@ -86,8 +88,8 @@ final class PhotoGalleryViewController: UIViewController {
     private func startDismiss(from: CGRect? = nil) {
         galleryView.hideControls()
         currentPhotoController.image = nil
-        galleryView.animateOut(from: from,
-                            to: viewModel.startRect,
+        galleryView.animatePhotoOut(from: from,
+                            to: viewModel.selectedImageRect,
                             with: viewModel.selectedImage) { [weak self] in
             self?.dismiss(animated: false, completion: nil)
         }
@@ -108,26 +110,24 @@ final class PhotoGalleryViewController: UIViewController {
 
 extension PhotoGalleryViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let photoController = viewController as? SinglePhotoViewController,
-              let image = photoController.image,
-              let index = viewModel.images.firstIndex(of: image),
-              index > 0
-        else {
-            return nil
-        }
+        guard let newIndex = viewModel.previousIndex else { return nil }
         
-        return self.photoController(for: index - 1)
+        return photoController(for: newIndex)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let photoController = viewController as? SinglePhotoViewController,
-              let image = photoController.image,
-              let index = viewModel.images.firstIndex(of: image),
-              index < viewModel.images.count - 1
-        else {
-            return nil
-        }
+        guard let newIndex = viewModel.nextIndex else { return nil }
+
+        return photoController(for: newIndex)
+    }
+}
+
+extension PhotoGalleryViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let controller = pageViewController.viewControllers?.first as? SinglePhotoViewController else { return }
         
-        return self.photoController(for: index + 1)
+        if completed {
+            viewModel.selectedImageIndex = controller.index
+        }
     }
 }

@@ -9,16 +9,28 @@ import UIKit
 
 final class PhotoGalleryViewModel {
     private(set) var images: [UIImage]
-    private(set) var selectedImageIndex: Int
-    let startRect: CGRect
+    private(set) var rects: [CGRect]
+    var selectedImageIndex: Int
     
     var selectedImage: UIImage {
         return images[selectedImageIndex]
     }
     
-    init(images: [UIImage], selectedImageIndex: Int, startRect: CGRect) {
+    var selectedImageRect: CGRect {
+        return rects[selectedImageIndex]
+    }
+    
+    var nextIndex: Int? {
+        return selectedImageIndex < images.count - 1 ? selectedImageIndex + 1 : nil
+    }
+    
+    var previousIndex: Int? {
+        return selectedImageIndex > 0 ? selectedImageIndex - 1 : nil
+    }
+    
+    init(images: [UIImage], rects: [CGRect], selectedImageIndex: Int) {
         self.images = images
         self.selectedImageIndex = selectedImageIndex
-        self.startRect = startRect
+        self.rects = rects
     }
 }

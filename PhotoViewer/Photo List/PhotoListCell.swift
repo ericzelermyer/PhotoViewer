@@ -8,13 +8,18 @@
 import UIKit
 
 final class PhotoListCell: UITableViewCell {
+    struct CollectionDescription {
+        let photoRects: [CGRect]
+        let selectedIndex: Int
+    }
     enum Constants {
         static let itemSize: CGSize = CGSize(width: 216, height: 216)
         static let spacing: CGFloat = 8
         static let verticalMargin: CGFloat = 30
+        static let contentInsets = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 60)
     }
     
-    var imageTapHandler: ((UIImageView) -> Void)?
+    var imageTapHandler: ((CollectionDescription) -> Void)?
     
     private var images: [UIImage] = []
     
@@ -30,7 +35,7 @@ final class PhotoListCell: UITableViewCell {
         $0.heightAnchor.constraint(equalToConstant: Constants.itemSize.height).activate()
         $0.backgroundColor = .clear
         $0.showsHorizontalScrollIndicator = false
-        $0.contentInset = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 60)
+        $0.contentInset = Constants.contentInsets
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -60,6 +65,15 @@ final class PhotoListCell: UITableViewCell {
             imageDisplay.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageDisplay.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
+    }
+    
+    fileprivate func getCellRects() -> [CGRect] {
+        var rects = [CGRect]()
+        for num in 0..<images.count {
+            let x = CGFloat(num) * (Constants.itemSize.width + Constants.spacing) - imageDisplay.contentOffset.x
+            rects.append(CGRect(origin: CGPoint(x: x, y: Constants.verticalMargin), size: Constants.itemSize))
+        }
+        return rects
     }
     
     func configure(with images: [UIImage]) {
@@ -103,8 +117,6 @@ extension PhotoListCell: UICollectionViewDelegateFlowLayout {
 
 extension PhotoListCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let photoCell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionvViewCell else { return }
-        
-        imageTapHandler?(photoCell.imageView)
+        imageTapHandler?(CollectionDescription(photoRects: getCellRects(), selectedIndex: indexPath.item))
     }
 }

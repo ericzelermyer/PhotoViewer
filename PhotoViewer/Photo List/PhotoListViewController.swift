@@ -41,28 +41,27 @@ class PhotoListViewController: UITableViewController {
         cell.selectionStyle = .none
         let images = viewModel.images(at: indexPath.row)
         cell.configure(with: images)
-        cell.imageTapHandler = { [weak self] imageView in
-            guard let self = self else { return }
+        cell.imageTapHandler = { [weak self] description in
+            guard let self = self,
+                  let currentCell = tableView.cellForRow(at: indexPath)
+            else { return }
             
-            let selectedIndex: Int = {
-                guard let image = imageView.image else { return 0 }
-                return images.firstIndex(of: image) ?? 0
-            }()
+            let destinationView = UIWindow.mainWindow ?? tableView
+            let convertedRects = description.photoRects.map { currentCell.convert($0, to: destinationView) }
             
             self.displayPhotoGallery(for: indexPath,
-                                     atLocation: imageView.convert(imageView.bounds,
-                                                                   to: UIWindow.mainWindow ?? tableView),
-                                     selectedIndex: selectedIndex)
+                                     rects: convertedRects,
+                                     selectedIndex: description.selectedIndex)
         }
         return cell
     }
     
     private func displayPhotoGallery(for indexPath: IndexPath,
-                                     atLocation rect: CGRect,
+                                     rects: [CGRect],
                                      selectedIndex: Int) {
         let galleryViewModel = PhotoGalleryViewModel(images: viewModel.images(at: indexPath.row),
-                                                     selectedImageIndex: selectedIndex,
-                                                     startRect: rect)
+                                                     rects: rects,
+                                                     selectedImageIndex: selectedIndex)
         let gallery = PhotoGalleryViewController(viewModel: galleryViewModel)
         gallery.modalPresentationStyle = .overFullScreen
         present(gallery, animated: false, completion: nil)

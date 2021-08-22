@@ -11,6 +11,7 @@ final class SinglePhotoViewController: UIViewController {
     enum Constants {
         static let dismissThreshold: CGFloat = 80
     }
+    let index: Int
     
     var dismissHandler: ((CGRect) -> Void)?
     var dismissProgressHandler: ((CGFloat) -> Void)?
@@ -25,8 +26,9 @@ final class SinglePhotoViewController: UIViewController {
     private var dragImage: UIImageView?
     private var dragStartPoint: CGPoint?
     
-    init(image: UIImage) {
+    init(image: UIImage, index: Int) {
         self.image = image
+        self.index = index
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -106,7 +108,7 @@ final class SinglePhotoViewController: UIViewController {
     func toggleZoom() {
         if imageView.zoomScale == 1 {
             imageView.setZoomScale(3, animated: true)
-        } else { 
+        } else {
             imageView.setZoomScale(1, animated: true)
         }
     }
