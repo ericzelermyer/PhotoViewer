@@ -12,7 +12,7 @@ struct PhotoContentViewConfiguration: UIContentConfiguration {
     let cornerRadius: CGFloat
     var showSelection: Bool = false
     var borderWidth: CGFloat = 4.0
-    let borderColor = UIColor(named: "accent_color")
+    let borderColor = UIColor(named: "accent_color")!
 
     func makeContentView() -> UIView & UIContentView {
         return PhotoContentView(configuration: self)
@@ -69,7 +69,7 @@ final class PhotoContentView: UIView, UIContentView {
         imageView.image = configuration.image
         imageView.layer.cornerRadius = configuration.cornerRadius
         imageView.layer.borderWidth = configuration.borderWidth
-        imageView.layer.borderColor = configuration.borderColor?.cgColor
+        imageView.layer.borderColor = configuration.borderColor.cgColor
     }
 
 }
